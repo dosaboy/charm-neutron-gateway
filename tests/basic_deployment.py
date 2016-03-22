@@ -595,7 +595,10 @@ class NeutronGatewayBasicDeployment(OpenStackAmuletDeployment):
             return
 
         unit = self.neutron_gateway_sentry
-        conf = '/etc/neutron/plugins/ml2/ml2_conf.ini'
+        if self._get_openstack_release() < self.trusty_mitaka:
+            conf = '/etc/neutron/plugins/ml2/ml2_conf.ini'
+        else:
+            conf = '/etc/neutron/plugins/ml2/openvswitch_agent.ini'
 
         expected = {
             'ml2': {
